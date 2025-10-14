@@ -1,0 +1,18 @@
+.result {
+  border: 1px solid black;
+  padding: 10px 15px;
+  margin-bottom: 50px;
+  background-color: antiquewhite;
+}
+.btn {
+  height: 100px;
+  max-width: 300px;
+  width: 100%;
+  background-color: chocolate;
+  color: aliceblue;
+}
+.btn__area {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
