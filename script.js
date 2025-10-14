@@ -14,7 +14,7 @@ async function getPosts() {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    const posts = await response.json();
+    const posts = await response;
     userID.innerHTML = `id Полььзователя: ${posts.userId}`;
     id.innerHTML = `id: ${posts.id}`;
     title.innerHTML = `Title: ${posts.title}`;
