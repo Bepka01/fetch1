@@ -8,11 +8,20 @@ const loader = document.querySelector(".loader");
 function getRandomNumber() {
   return Math.floor(Math.random() * 100) + 1;
 }
+
+function startLoader() {
+  loader.style.display = "block";
+  btn.disabled = true;
+  btn.style.backgroundColor = "gray";
+}
+function endLoader() {
+  loader.style.display = "none";
+  btn.style.backgroundColor = "chocolate";
+  btn.disabled = false;
+}
 async function getPosts() {
   try {
-    loader.style.display = "block";
-    btn.disabled = true;
-    btn.style.backgroundColor = "gray";
+    startLoader();
     const url = `https://jsonplaceholder.typicode.com/posts/${getRandomNumber()}`;
     const response = await fetch(url);
     if (!response.ok) {
@@ -26,10 +35,8 @@ async function getPosts() {
   } catch (error) {
     alert("ошибка запроса");
   } finally {
-    loader.style.display = "none";
-    btn.style.backgroundColor = "chocolate";
-    btn.disabled = false;
     console.log("Запрос совершен");
+    endLoader();
   }
 }
 btn.addEventListener("click", getPosts);
