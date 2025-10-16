@@ -8,7 +8,7 @@ const loader = document.querySelector(".loader");
 function getRandomNumber() {
   return Math.floor(Math.random() * 100) + 1;
 }
-
+getPosts();
 function startLoader() {
   loader.style.display = "block";
   btn.disabled = true;
