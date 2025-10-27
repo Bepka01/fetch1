@@ -7,11 +7,13 @@ const body = document.querySelector(".body");
 const loader = document.querySelector(".loader");
 
 const uniqeID = new Set();
-const arrayLastsID = [];
 
 function blockBtn() {
-  if (arrayLastsID.length >= 100) {
-    btn.disabled;
+  if (uniqeID.size >= 99) {
+    btn.style.backgroundColor = "gray";
+    btn.disabled = true;
+  } else {
+    btn.disabled = false;
   }
 }
 
@@ -22,13 +24,13 @@ function getRandomUniqueId() {
   } while (uniqeID.has(id));
   uniqeID.add(id);
   console.log(uniqeID);
+  blockBtn();
   return id;
 }
 
 function getLastID() {
   const arrayUniqueID = Array.from(uniqeID);
   const lastID = arrayUniqueID[arrayUniqueID.length - 1];
-  arrayLastsID.push(lastID);
   console.log(lastID);
   return lastID;
 }
@@ -43,6 +45,7 @@ function endLoader() {
   loader.style.display = "none";
   btn.style.backgroundColor = "chocolate";
   btn.disabled = false;
+  blockBtn();
 }
 async function getPosts() {
   try {
