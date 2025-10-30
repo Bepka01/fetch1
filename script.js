@@ -9,7 +9,7 @@ const loader = document.querySelector(".loader");
 const uniqeID = new Set();
 
 function blockBtn() {
-  if (uniqeID.size >= 99) {
+  if (uniqeID.size >= 100) {
     btn.style.backgroundColor = "gray";
     btn.disabled = true;
   } else {
@@ -35,22 +35,40 @@ function getLastID() {
   return lastID;
 }
 
-getPosts();
+function savedLastID() {
+  const lastID = getLastID();
+  localStorage.setItem("lastid", lastID);
+}
+
+function lastIdFromLS() {
+  return JSON.parse(localStorage.getItem("lastid"));
+}
+
 function startLoader() {
   loader.style.display = "block";
   btn.disabled = true;
   btn.style.backgroundColor = "gray";
 }
+
 function endLoader() {
   loader.style.display = "none";
   btn.style.backgroundColor = "chocolate";
   btn.disabled = false;
   blockBtn();
 }
-async function getPosts() {
+
+async function getPosts(postid) {
   try {
+    console.log("postid", postid);
+    let id;
+    if (postid) {
+      id = postid;
+    } else {
+      id = getRandomUniqueId();
+    }
+
     startLoader();
-    const url = `https://jsonplaceholder.typicode.com/posts/${getRandomUniqueId()}`;
+    const url = `https://jsonplaceholder.typicode.com/posts/${id}`;
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -63,9 +81,13 @@ async function getPosts() {
   } catch (error) {
     alert("ошибка запроса");
   } finally {
-    getLastID();
+    savedLastID();
     console.log("Запрос совершен");
     endLoader();
   }
 }
-btn.addEventListener("click", getPosts);
+
+getPosts(lastIdFromLS());
+btn.addEventListener("click", () => {
+  getPosts();
+});
