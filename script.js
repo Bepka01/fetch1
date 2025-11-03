@@ -1,12 +1,26 @@
 const btn = document.querySelector(".btn");
 const res = document.querySelector(".result");
 const userID = document.querySelector(".userID");
-const id = document.querySelector(".id");
+const elementID = document.querySelector(".id");
 const title = document.querySelector(".title");
 const body = document.querySelector(".body");
 const loader = document.querySelector(".loader");
 
 const uniqeID = new Set();
+
+function saveUniqueID() {
+  const uniqueArrayMass = Array.from(uniqeID);
+  localStorage.setItem("uniqueID", JSON.stringify(uniqueArrayMass));
+}
+
+function getUniqueID() {
+  const uniqueArrayFromLs = localStorage.getItem("uniqueID");
+  const retrievedObject = JSON.parse(uniqueArrayFromLs) || [];
+  for (let i = 0; i < retrievedObject.length; i++) {
+    uniqeID.add(retrievedObject[i]);
+    console.log(uniqeID);
+  }
+}
 
 function blockBtn() {
   if (uniqeID.size >= 100) {
@@ -22,7 +36,6 @@ function getRandomUniqueId() {
   do {
     id = Math.floor(Math.random() * 100) + 1;
   } while (uniqeID.has(id));
-  uniqeID.add(id);
   console.log(uniqeID);
   blockBtn();
   return id;
@@ -58,9 +71,9 @@ function endLoader() {
 }
 
 async function getPosts(postid) {
+  let id;
   try {
     console.log("postid", postid);
-    let id;
     if (postid) {
       id = postid;
     } else {
@@ -68,6 +81,7 @@ async function getPosts(postid) {
     }
 
     startLoader();
+
     const url = `https://jsonplaceholder.typicode.com/posts/${id}`;
     const response = await fetch(url);
     if (!response.ok) {
@@ -75,19 +89,27 @@ async function getPosts(postid) {
     }
     const post = await response.json();
     userID.innerHTML = `id Полььзователя: ${post.userId}`;
-    id.innerHTML = `id: ${post.id}`;
+    elementID.innerHTML = `id: ${post.id}`;
     title.innerHTML = `Title: ${post.title}`;
     body.innerHTML = `body: ${post.body}`;
   } catch (error) {
     alert("ошибка запроса");
   } finally {
+    uniqeID.add(id);
+    saveUniqueID();
     savedLastID();
     console.log("Запрос совершен");
     endLoader();
   }
 }
-
+getUniqueID();
 getPosts(lastIdFromLS());
 btn.addEventListener("click", () => {
   getPosts();
 });
+
+function fullPost() {
+  for (let i = 0; i < 100; i++) {
+    uniqeID.add(i);
+  }
+}
