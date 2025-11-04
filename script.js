@@ -11,6 +11,9 @@ function showBtnClear() {
   if (uniqeID.size === 100) {
     btnClear.style.display = "block";
   }
+  if (uniqeID.size <= 99) {
+    btnClear.style.display = "none";
+  }
 }
 
 const uniqeID = new Set();
