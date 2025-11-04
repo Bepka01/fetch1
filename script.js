@@ -5,6 +5,13 @@ const elementID = document.querySelector(".id");
 const title = document.querySelector(".title");
 const body = document.querySelector(".body");
 const loader = document.querySelector(".loader");
+const btnClear = document.querySelector(".btn__clear");
+
+function showBtnClear() {
+  if (uniqeID.size === 100) {
+    btnClear.style.display = "block";
+  }
+}
 
 const uniqeID = new Set();
 
@@ -96,6 +103,7 @@ async function getPosts(postid) {
     alert("ошибка запроса");
   } finally {
     uniqeID.add(id);
+    showBtnClear();
     saveUniqueID();
     savedLastID();
     console.log("Запрос совершен");
@@ -106,6 +114,13 @@ getUniqueID();
 getPosts(lastIdFromLS());
 btn.addEventListener("click", () => {
   getPosts();
+});
+
+btnClear.addEventListener("click", () => {
+  uniqeID.clear();
+  localStorage.clear(uniqeID);
+  btn.style.backgroundColor = "chocolate";
+  blockBtn();
 });
 
 function fullPost() {
