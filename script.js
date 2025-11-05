@@ -28,7 +28,6 @@ function getUniqueID() {
   const retrievedObject = JSON.parse(uniqueArrayFromLs) || [];
   for (let i = 0; i < retrievedObject.length; i++) {
     uniqeID.add(retrievedObject[i]);
-    console.log(uniqeID);
   }
 }
 
@@ -46,7 +45,6 @@ function getRandomUniqueId() {
   do {
     id = Math.floor(Math.random() * 100) + 1;
   } while (uniqeID.has(id));
-  console.log(uniqeID);
   blockBtn();
   return id;
 }
@@ -54,7 +52,6 @@ function getRandomUniqueId() {
 function getLastID() {
   const arrayUniqueID = Array.from(uniqeID);
   const lastID = arrayUniqueID[arrayUniqueID.length - 1];
-  console.log(lastID);
   return lastID;
 }
 
@@ -83,7 +80,6 @@ function endLoader() {
 async function getPosts(postid) {
   let id;
   try {
-    console.log("postid", postid);
     if (postid) {
       id = postid;
     } else {
@@ -106,10 +102,9 @@ async function getPosts(postid) {
     alert("ошибка запроса");
   } finally {
     uniqeID.add(id);
-    showBtnClear();
     saveUniqueID();
     savedLastID();
-    console.log("Запрос совершен");
+    showBtnClear();
     endLoader();
   }
 }
