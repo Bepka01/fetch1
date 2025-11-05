@@ -5,6 +5,16 @@ const elementID = document.querySelector(".id");
 const title = document.querySelector(".title");
 const body = document.querySelector(".body");
 const loader = document.querySelector(".loader");
+const btnClear = document.querySelector(".btn__clear");
+
+function showBtnClear() {
+  if (uniqeID.size === 100) {
+    btnClear.style.display = "block";
+  }
+  if (uniqeID.size <= 99) {
+    btnClear.style.display = "none";
+  }
+}
 
 const uniqeID = new Set();
 
@@ -18,7 +28,6 @@ function getUniqueID() {
   const retrievedObject = JSON.parse(uniqueArrayFromLs) || [];
   for (let i = 0; i < retrievedObject.length; i++) {
     uniqeID.add(retrievedObject[i]);
-    console.log(uniqeID);
   }
 }
 
@@ -36,7 +45,6 @@ function getRandomUniqueId() {
   do {
     id = Math.floor(Math.random() * 100) + 1;
   } while (uniqeID.has(id));
-  console.log(uniqeID);
   blockBtn();
   return id;
 }
@@ -44,7 +52,6 @@ function getRandomUniqueId() {
 function getLastID() {
   const arrayUniqueID = Array.from(uniqeID);
   const lastID = arrayUniqueID[arrayUniqueID.length - 1];
-  console.log(lastID);
   return lastID;
 }
 
@@ -73,7 +80,6 @@ function endLoader() {
 async function getPosts(postid) {
   let id;
   try {
-    console.log("postid", postid);
     if (postid) {
       id = postid;
     } else {
@@ -98,7 +104,7 @@ async function getPosts(postid) {
     uniqeID.add(id);
     saveUniqueID();
     savedLastID();
-    console.log("Запрос совершен");
+    showBtnClear();
     endLoader();
   }
 }
@@ -106,6 +112,13 @@ getUniqueID();
 getPosts(lastIdFromLS());
 btn.addEventListener("click", () => {
   getPosts();
+});
+
+btnClear.addEventListener("click", () => {
+  uniqeID.clear();
+  localStorage.clear(uniqeID);
+  btn.style.backgroundColor = "chocolate";
+  blockBtn();
 });
 
 function fullPost() {
